@@ -4,12 +4,12 @@ import com.banksystem.utils.DateFormatter;
 import java.time.LocalDateTime;
 
 public class Transaction {
-    private String type;
+    private TransactionType type;
     private double value;
     private LocalDateTime date;
     private String description;
 
-    public Transaction(String type, double value, String description) {
+    public Transaction(TransactionType type, double value, String description) {
         setType(type);
         setValue(value);
         this.date = LocalDateTime.now();
@@ -20,11 +20,11 @@ public class Transaction {
         return this.date;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return this.type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
