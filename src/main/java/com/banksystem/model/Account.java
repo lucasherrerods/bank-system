@@ -1,12 +1,13 @@
 package com.banksystem.model;
 
+import com.banksystem.repositories.AccountRepository;
+
 import java.util.ArrayList;
 
 import static com.banksystem.model.TransactionType.*;
 
 public abstract class Account {
     private static int counter = 1;
-    private static final ArrayList<Account> clientsList = new ArrayList<>();
     private ArrayList<Transaction> history;
 
     private final int accountNumber;
@@ -19,7 +20,6 @@ public abstract class Account {
         this.balance = 0;
 
         Account.counter += 1;
-        clientsList.add(this);
         history = new ArrayList<>();
     }
 
@@ -30,10 +30,6 @@ public abstract class Account {
 
     public int getAccountNumber() {
         return this.accountNumber;
-    }
-
-    public static ArrayList<Account> getClientsList() {
-        return clientsList;
     }
 
     public Client getClient() {
@@ -52,40 +48,17 @@ public abstract class Account {
         return this.history;
     }
 
-    public static Account findAccount(int accountNumber) {
-        Account account = null;
-        if (!getClientsList().isEmpty()) {
-            for (Account c : clientsList) {
-                if (c.getAccountNumber() == accountNumber) {
-                    account = c;
-                }
-            }
-        }   else {
-            System.out.println("Conta não encontrada.");
-        }
-
-        return account;
-    }
-
     public void deposit(double value) {
         setBalance(getBalance() + value);
         System.out.println("Depósito realizado com sucesso!");
         recordTransaction(DEPOSIT, value, "Depósito em conta.");
     }
 
-    public void withdraw(double value) {
-        if (getBalance() >= value) {
-            setBalance(getBalance() - value);
-            System.out.println("Saque realizado com sucesso!");
-            recordTransaction(WITHDRAW, value, "Saque.");
-        }   else {
-            System.out.println("Saldo insuficiente! Não foi possível realizar o saque neste momento.");
-        }
-    }
+    public abstract void withdraw(double value);
 
     public void transfer(int receiverAccount, double value) {
         if (getBalance() >= value) {
-            Account receiver = findAccount(receiverAccount);
+            Account receiver = AccountRepository.findAccount(receiverAccount);
 
             setBalance(getBalance() - value);
             receiver.setBalance(receiver.getBalance() + value);

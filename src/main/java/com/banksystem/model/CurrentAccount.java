@@ -22,8 +22,7 @@ public class CurrentAccount extends Account {
     public void withdraw(double value) {
         double fee = (withdrawFee / 100) * value;
 
-        if (getBalance() >= value && getBalance() > 0) {
-
+        if (getBalance() >= value) {
             setBalance((getBalance() - value) - fee);
             System.out.println("Saque realizado com sucesso!");
             recordTransaction(WITHDRAW, value, "Saque. (Taxa 10% = R$" + fee + ")");
