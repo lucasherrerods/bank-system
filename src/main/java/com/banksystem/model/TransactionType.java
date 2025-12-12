@@ -3,5 +3,6 @@ package com.banksystem.model;
 public enum TransactionType {
     DEPOSIT,
     WITHDRAW,
-    TRANSFER
+    TRANSFER_ENTRY,
+    TRANSFER_OUTPUT
 }
