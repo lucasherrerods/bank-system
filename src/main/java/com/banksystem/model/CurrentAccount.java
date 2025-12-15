@@ -19,6 +19,11 @@ public class CurrentAccount extends Account {
     }
 
     @Override
+    public String toString() {
+        return "{ NºConta: " + getAccountNumber() + ", Cliente: " + getClient().getName() + ", Tipo: Conta Corrente, Saldo: " + getBalance() + " }";
+    }
+
+    @Override
     public void withdraw(double value) {
         double fee = (withdrawFee / 100) * value;
 

@@ -1,6 +1,6 @@
 package com.banksystem.model;
 
-import com.banksystem.repositories.AccountRepository;
+import com.banksystem.service.AccountService;
 
 import java.util.ArrayList;
 
@@ -19,13 +19,12 @@ public abstract class Account {
         this.client = client;
         this.balance = 0;
 
-        Account.counter += 1;
         history = new ArrayList<>();
     }
 
     @Override
     public String toString() {
-        return "{ Nº Conta: " + getAccountNumber() + ", Cliente: " + getClient().getName() + ", Saldo: " + getBalance() + " }";
+        return "{ NºConta: " + getAccountNumber() + ", Cliente: " + getClient().getName() + ", Saldo: " + getBalance() + " }";
     }
 
     public int getAccountNumber() {
@@ -44,21 +43,29 @@ public abstract class Account {
         this.balance = balance;
     }
 
+    public void setCounter() {
+        Account.counter += 1;
+    }
+
     public ArrayList<Transaction> getHistory() {
         return this.history;
     }
 
     public void deposit(double value) {
-        setBalance(getBalance() + value);
-        System.out.println("Depósito realizado com sucesso!");
-        recordTransaction(DEPOSIT, value, "Depósito em conta.");
+        if (value <= 0) {
+            System.out.println("Valor inválido! Não foi possível realizar o depósito.");
+        }   else {
+            setBalance(getBalance() + value);
+            System.out.println("Depósito realizado com sucesso!");
+            recordTransaction(DEPOSIT, value, "Depósito em conta.");
+        }
     }
 
     public abstract void withdraw(double value);
 
     public void transfer(int receiverAccount, double value) {
         if (getBalance() >= value) {
-            Account receiver = AccountRepository.findAccount(receiverAccount);
+            Account receiver = AccountService.findAccount(receiverAccount);
 
             setBalance(getBalance() - value);
             receiver.setBalance(receiver.getBalance() + value);

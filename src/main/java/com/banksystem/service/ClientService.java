@@ -1,8 +1,11 @@
 package com.banksystem.service;
 
+import com.banksystem.model.Account;
 import com.banksystem.model.Client;
+import com.banksystem.repositories.AccountRepository;
 import com.banksystem.repositories.ClientRepository;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +23,7 @@ public class ClientService {
         return matcher.matches();
     }
 
-    public boolean addClient(Client client) {
+    public static boolean addClient(Client client) {
         for (Client c : ClientRepository.listClients()) {
             if (c.getCpf().equals(client.getCpf())){
                 System.out.println("Já existe um cliente cadastrado com esse CPF!");
@@ -36,18 +39,37 @@ public class ClientService {
             return false;
         }   else {
             ClientRepository.addClient(client);
-            System.out.println("Cliente adicionado com sucesso.");
+            client.setCounter();
+            System.out.println("Cliente adicionado com sucesso!");
+            System.out.println(client.toString());
             return true;
         }
     }
 
-    public void findClient(int clientID) {
+    public static Client findClient(int clientID) {
         Client client = ClientRepository.findClient(clientID);
 
         if (client == null) {
             System.out.println("Cliente não localizado.");
         }   else {
+            System.out.println("Informações do cliente:");
             System.out.println(client);
+        }
+        return client;
+    }
+
+    public static void listClients() {
+        List<Client> clients = ClientRepository.listClients();
+
+        if (clients.isEmpty()) {
+            System.out.println("Nenhum cliente cadastrado.");
+        }   else {
+            System.out.println("Lista de clients:");
+            System.out.println("---------------------------");
+
+            for (Client c : clients) {
+                System.out.println(c.toString());
+            }
         }
     }
 

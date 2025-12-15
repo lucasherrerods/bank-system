@@ -7,11 +7,11 @@ public class Client {
     private String cpf;
     private String email;
 
-    public Client(String name, String cpf) {
+    public Client(String name, String cpf, String email) {
         this.id = counter;
         setName(name);
         setCpf(cpf);
-        Client.counter += 1;
+        setEmail(email);
     }
 
     public int getId() {
@@ -40,6 +40,10 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setCounter() {
+        Client.counter += 1;
     }
 
     @Override

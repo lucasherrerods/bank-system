@@ -17,6 +17,11 @@ public class SavingsAccount extends Account {
     }
 
     @Override
+    public String toString() {
+        return "{ NºConta: " + getAccountNumber() + ", Cliente: " + getClient().getName() + ", Tipo: Conta Poupança, Saldo: " + getBalance() + " }";
+    }
+
+    @Override
     public void withdraw(double value) {
         if (getBalance() >= value && value >= minWithdraw) {
             setBalance(getBalance() - value);
